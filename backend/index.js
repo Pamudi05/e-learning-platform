@@ -2,19 +2,28 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import connectToDatabase from "./db/dbConnection.js";
+import cookieParser from "cookie-parser";
 
 import openAiRouter from './routes/openAIRoute.js'
 import authRouter from './routes/authRoutes.js'
+import courseRouter from './routes/courseRoutes.js'
 
 dotenv.config();
 
 const app = express();
 app.use(express.json());
 connectToDatabase();
-app.use(cors());
+app.use(cors({
+  origin: "http://localhost:3000",
+  credentials: true
+}));
+app.use(cookieParser());
 
-app.use("/api/v1/openai/", openAiRouter)
-app.use("/api/v1/auth/", authRouter)
+app.use("/api/v1/openai/", openAiRouter);
+app.use("/api/v1/auth/", authRouter);
+app.use("/api/v1/course/", courseRouter);
+
+app.use('/uploads', express.static('uploads'));
 
 const PORT = process.env.PORT;
 

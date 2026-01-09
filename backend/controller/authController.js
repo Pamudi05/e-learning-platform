@@ -1,6 +1,6 @@
 import User from "../model/UserModel.js";
-import bcrypt from "bcrypt"
-import transporter from "../util/nodemailer.js"
+import bcrypt from "bcrypt";
+import transporter from "../util/nodemailer.js";
 import jwt from "jsonwebtoken";
 
 const secret = process.env.SECRET_KEY;
@@ -18,7 +18,7 @@ const registerUser = async (req, res) => {
     const user = new User({
       name: req.body.name,
       email: req.body.email,
-      password: hash,    
+      password: hash,
     });
 
     const result = await user.save();
@@ -64,15 +64,17 @@ const loginUser = async (req, res) => {
       return res.status(401).json({ message: "Invalid Password" });
     }
 
-    const simplifiedUser = {
-      userId: existingUser._id,
-      email: existingUser.email,
-      role: existingUser.role 
-    };
-
-    const token = jwt.sign({ User: simplifiedUser }, secret, {
-      expiresIn: "5h",
-    });
+    const token = jwt.sign(
+      {
+        userId: existingUser._id,
+        email: existingUser.email,
+        role: existingUser.role,
+      },
+      secret,
+      {
+        expiresIn: "5h",
+      }
+    );
 
     res.cookie("token", token, {
       httpOnly: true,
@@ -80,7 +82,15 @@ const loginUser = async (req, res) => {
       secure: process.env.NODE_ENV === "production",
     });
 
-    res.status(200).json({ message: "User Successfully Login", user: simplifiedUser });
+    res.status(200).json({
+      message: "User Successfully Login",
+      user: {
+        userId: existingUser._id,
+        email: existingUser.email,
+        role: existingUser.role,
+      },
+    });
+    
   } catch (error) {
     console.error("LOGIN ERROR:", error.message);
     res.status(500).json({ message: "something went wrong", error: error });
@@ -94,11 +104,11 @@ const logOut = async (req, res) => {
       maxAge: 5 * 60 * 60 * 1000,
       secure: process.env.NODE_ENV === "production",
     });
-    res.status(200).json({ message: 'Logout successful!' });
+    res.status(200).json({ message: "Logout successful!" });
     res.end();
   } catch (error) {
     res.status(500).json({ message: "something went wrong", error: error });
   }
 };
 
-export default { registerUser , loginUser , logOut};
+export default { registerUser, loginUser, logOut };
