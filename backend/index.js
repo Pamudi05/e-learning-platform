@@ -4,6 +4,7 @@ import cors from "cors";
 import connectToDatabase from "./db/dbConnection.js";
 
 import openAiRouter from './routes/openAIRoute.js'
+import userRouter from './routes/userRoutes.js'
 
 dotenv.config();
 
@@ -13,6 +14,7 @@ connectToDatabase();
 app.use(cors());
 
 app.use("/api/v1/openai/", openAiRouter)
+app.use("/api/v1/user/", userRouter)
 
 const PORT = process.env.PORT;
 
