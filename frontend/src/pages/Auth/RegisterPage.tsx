@@ -10,6 +10,8 @@ const RegisterPage = () => {
 
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [emailTouched, setEmailTouched] = useState(false);
+  const [passwordTouched, setPasswordTouched] = useState(false);
 
   const validateEmail = (email: string) => {
     const emailRegex = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/;
@@ -21,9 +23,8 @@ const RegisterPage = () => {
     return passwordRegex.test(password);
   };
 
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value as string;
-    setEmail(value);
+  const handleEmailBlur = () => {
+    setEmailTouched(true);
 
     if (!validateEmail(email)) {
       setEmailError("Incorrect email. Please try again.");
@@ -32,9 +33,8 @@ const RegisterPage = () => {
     }
   };
 
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value as string;
-    setPassword(value);
+  const handlePasswordChange = () => {
+    setPasswordTouched(true);
 
     if (!validatePassword(password)) {
       setPasswordError("Password must be at least 8 characters.");
@@ -64,9 +64,10 @@ const RegisterPage = () => {
               type="email"
               placeholder="Enter you email"
               value={email}
-              onChange={handleEmailChange}
+              onChange={(e) => setEmail(e.target.value)}
+              onBlur={handleEmailBlur}
             />
-            {emailError && <p className="error-text">{emailError}</p>}
+            {emailTouched && <p className="error-text">{emailError}</p>}
           </div>
           <div className="inputField-box">
             <InputField
@@ -74,9 +75,10 @@ const RegisterPage = () => {
               type="password"
               placeholder="Enter you password"
               value={password}
-              onChange={handlePasswordChange}
+              onChange={(e) => setPassword(e.target.value)}
+              onBlur={handlePasswordChange}
             />
-            {passwordError && <p className="error-text">{passwordError}</p>}
+            {passwordTouched && <p className="error-text">{passwordError}</p>}
           </div>
           <div className="button-box">
             <Button className="button" type="submit" name="REGISTER" />

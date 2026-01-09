@@ -1,15 +1,17 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Button from "../../components/Button/Button";
 import InputField from "../../components/InputFiled/InputField";
 import { useState } from "react";
 
 const LoginPage = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [emailTouched, setEmailTouched] = useState(false);
+  const [passwordTouched, setPasswordTouched] = useState(false);
 
   const validateEmail = (email: string) => {
     const emailRegex = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/;
@@ -21,9 +23,8 @@ const LoginPage = () => {
     return passwordRegex.test(password);
   };
 
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value as string;
-    setEmail(value);
+  const handleEmailBlur = () => {
+    setEmailTouched(true);
 
     if (!validateEmail(email)) {
       setEmailError("Incorrect email. Please try again.");
@@ -32,9 +33,8 @@ const LoginPage = () => {
     }
   };
 
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value as string;
-    setPassword(value);
+  const handlePasswordChange = () => {
+    setPasswordTouched(true);
 
     if (!validatePassword(password)) {
       setPasswordError("Password must be at least 8 characters.");
@@ -45,18 +45,17 @@ const LoginPage = () => {
 
   const handleLoginClick = (event: React.FormEvent) => {
     event.preventDefault();
-    setEmailError("");
-    setPasswordError("");
+    setEmailTouched(true);
+    setPasswordTouched(true);
 
     const isEmailValid = validateEmail(email);
     const isPasswordValid = validatePassword(password);
 
-    if (!isEmailValid) {
-      setEmailError("Invalid email format.");
-    }
+    setEmailError(isEmailValid ? "" : "Invalid email format.");
+    setPasswordError(isPasswordValid ? "" : "Wrong password. Please check and retry.");
 
-    if (!isPasswordValid) {
-      setPasswordError("Wrong password. Please check and retry.");
+    if (isEmailValid && isPasswordValid) {
+      // API call here
     }
   };
 
@@ -73,9 +72,10 @@ const LoginPage = () => {
                 type="email"
                 placeholder="Enter you email"
                 value={email}
-                onChange={handleEmailChange}
+                onChange={(e) => setEmail(e.target.value)}
+                onBlur={handleEmailBlur}
               />
-              {emailError && <p className="error-text">{emailError}</p>}
+              {emailTouched && <p className="error-text">{emailError}</p>}
             </div>
             <div className="inputField-box">
               <InputField
@@ -83,9 +83,10 @@ const LoginPage = () => {
                 type="password"
                 placeholder="Enter you password"
                 value={password}
-                onChange={handlePasswordChange}
+                onChange={(e) => setPassword(e.target.value)}
+                onBlur={handlePasswordChange}
               />
-              {passwordError && <p className="error-text">{passwordError}</p>}
+              {passwordTouched && <p className="error-text">{passwordError}</p>}
             </div>
             <div className="forgot-box">
               <p className="forgot">forgotPassowrd?</p>

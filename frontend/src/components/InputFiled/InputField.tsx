@@ -1,6 +1,7 @@
 interface TextFielddProps {
   value?: string;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onBlur?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
   className?: string;
   type?: string;
@@ -22,6 +23,7 @@ interface TextFielddProps {
 const TextField: React.FC<TextFielddProps> = ({
   value,
   onChange,
+  onBlur,
   placeholder,
   className,
   type = "text",
@@ -45,6 +47,7 @@ const TextField: React.FC<TextFielddProps> = ({
         name={name}
         placeholder={placeholder}
         onChange={onChange}
+        onBlur={onBlur}
         style={{
           width,
           maxWidth,
