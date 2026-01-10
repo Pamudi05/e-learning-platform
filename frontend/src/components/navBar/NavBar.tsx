@@ -10,7 +10,7 @@ import menu from "../../assets/menu.png";
 
 interface NavBarProps {
   role?: "user" | "admin";
-};
+}
 
 const NavBar = ({ role = "user" }: NavBarProps) => {
   const [open, setOpen] = useState(false);
@@ -29,9 +29,11 @@ const NavBar = ({ role = "user" }: NavBarProps) => {
           onClick={() => setOpen(!open)}
         />
         <ul className={open ? "menu open" : "menu"}>
-          <li>
+          {role === "user" && (
+            <li>
               <Link to="/user">ALL COURSE</Link>
             </li>
+          )}
           {role === "user" && (
             <li>
               <Link to="/entrolledcourses">MY COURSE</Link>
@@ -48,7 +50,7 @@ const NavBar = ({ role = "user" }: NavBarProps) => {
                   {profileOpen && (
                     <div className="profile-menu">
                       <ul>
-                        <li>
+                        {/* <li>
                           <Link to="/profile">PROFILE</Link>
                         </li>
                         <li>
@@ -56,7 +58,7 @@ const NavBar = ({ role = "user" }: NavBarProps) => {
                             <span>APPEARANCE</span>
                             <img src={light} alt="" />
                           </div>
-                        </li>
+                        </li> */}
                         <li>
                           <div>
                             <span>LOGOUT</span>

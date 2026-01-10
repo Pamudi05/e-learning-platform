@@ -166,7 +166,77 @@
 }
 
 @media (max-width: 480px) {
-   .homepageInner {
+  .homepageInner {
     grid-template-columns: repeat(1, 1fr);
   }
+}
+
+/* ----------------------AdminPage----------------------- */
+
+.adminInner {
+  width: 100%;
+  min-height: 91vh;
+  display: flex;
+}
+
+.adminInner-left {
+  width: 300px;
+  position: relative;
+}
+
+.adminInner-right {
+  flex: 1;
+  padding: 20px;
+}
+
+@media (max-width: 768px) {
+  .adminInner-left {
+    width: 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  .adminInner {
+    flex-direction: row;
+  }
+
+  .adminInner-left {
+    width: 70px;
+  }
+
+  .adminInner-right {
+    padding: 15px;
+  }
+}
+
+/* ----------------------Course----------------------- */
+
+.courseOuter{
+  display: flex;
+  flex-direction: column;
+  border: 1px solid;
+}
+
+.courseTop{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.courseMiddle{
+ padding: 20px;
+border: 1px solid;
+}
+
+.courseBottom{
+  border: 1px solid;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.courseTop button , .courseBottom button{
+  width: 200px !important;
+  height: 40px !important;
+  margin-right: 30px !important;
+  margin-top: 0 !important;
 }

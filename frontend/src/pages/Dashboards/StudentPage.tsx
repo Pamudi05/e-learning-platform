@@ -13,7 +13,7 @@ const StudentPage = () => {
   return (
     <div className="HomepageOuter">
       <div className="homepageTop">
-        <NavBar />
+        <NavBar role="user" />
       </div>
       <div className="homepageMiddle">
         <TopBar title="ALL COURSES" />
