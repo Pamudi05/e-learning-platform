@@ -1,13 +1,15 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Button from "../../components/Button/Button";
 import InputField from "../../components/InputFiled/InputField";
 import { useState } from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const LoginPage = () => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [emailTouched, setEmailTouched] = useState(false);
@@ -27,7 +29,7 @@ const LoginPage = () => {
     setEmailTouched(true);
 
     if (!validateEmail(email)) {
-      setEmailError("Incorrect email. Please try again.");
+      setEmailError("Please enter vaild email.");
     } else {
       setEmailError("");
     }
@@ -37,25 +39,53 @@ const LoginPage = () => {
     setPasswordTouched(true);
 
     if (!validatePassword(password)) {
-      setPasswordError("Password must be at least 8 characters.");
+      setPasswordError("Password must be at least 8 characters.At least one letter and one number");
     } else {
       setPasswordError("");
     }
   };
 
-  const handleLoginClick = (event: React.FormEvent) => {
+  const handleLoginClick = async (event: React.FormEvent) => {
     event.preventDefault();
-    setEmailTouched(true);
-    setPasswordTouched(true);
+    setLoading(true);
+    try {
+      
+      setEmailTouched(true);
+      setPasswordTouched(true);
 
-    const isEmailValid = validateEmail(email);
-    const isPasswordValid = validatePassword(password);
+      const isEmailValid = validateEmail(email);
+      const isPasswordValid = validatePassword(password);
 
-    setEmailError(isEmailValid ? "" : "Invalid email format.");
-    setPasswordError(isPasswordValid ? "" : "Wrong password. Please check and retry.");
+      setEmailError(isEmailValid ? "" : "Invalid email format.");
+      setPasswordError(
+        isPasswordValid ? "" : "Wrong password. Please check and retry."
+      );
 
-    if (isEmailValid && isPasswordValid) {
-      // API call here
+      if (isEmailValid && isPasswordValid) {
+        const response = await axios.post(
+          "http://localhost:5000/api/v1/auth/login",
+          {
+            email,
+            password,
+          },
+          { withCredentials: true }
+        );
+
+        const role = response.data.user.role;
+
+        if (role === "admin") {
+          navigate("/admin");
+        } else {
+          navigate("/user");
+        }
+
+        toast.success(response.data.message || "Login successfully");
+      }
+    } catch (error:any) {
+      const errorMessage = error.response?.data?.message || "Failed to login. Please try again.";
+      toast.error(errorMessage);
+    }finally {
+      setLoading(false);
     }
   };
 

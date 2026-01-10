@@ -1,3 +1,7 @@
+* {
+  margin: 0;
+}
+
 .authOuter {
   width: 100vw;
   min-height: 100vh;
@@ -46,6 +50,7 @@
   align-items: center;
   border: 1px solid #16a085;
   border-radius: 15px;
+  padding-top: 30px;
 }
 
 .authInner-right form {
@@ -55,7 +60,7 @@
   align-items: center;
 }
 
-.auth-heading{
+.auth-heading {
   color: #16a085;
   font-size: 26px;
 }
@@ -107,17 +112,61 @@
   cursor: pointer;
 }
 
-
 @media (max-width: 768px) {
   .authInner-left {
     display: none;
   }
-  
-  .inputField-box, .forgot-box, .button-box{
+
+  .inputField-box,
+  .forgot-box,
+  .button-box {
     width: 80%;
   }
 
-  .input, .button{
+  .input,
+  .button {
     width: 100% !important;
+  }
+}
+
+/* ----------------------StudentPage----------------------- */
+
+.HomepageOuter {
+  width: 100%;
+  height: 100vh;
+}
+
+.homepageInner {
+  margin: 20px;
+  padding: 10px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  justify-items: center;
+}
+
+.homepageMiddle {
+  height: 50px;
+  padding: 20px;
+  margin: 10px 25px 0;
+  display: flex;
+  align-items: center;
+}
+
+@media (max-width: 1024px) {
+  .homepageInner {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .homepageInner {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+   .homepageInner {
+    grid-template-columns: repeat(1, 1fr);
   }
 }

@@ -1,17 +1,29 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Button from "../../components/Button/Button";
 import InputField from "../../components/InputFiled/InputField";
 import { useState } from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const RegisterPage = () => {
+  const navigate = useNavigate();
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [nameError, setNameError] = useState("");
+  const [nameTouched, setNameTouched] = useState(false);
   const [emailTouched, setEmailTouched] = useState(false);
   const [passwordTouched, setPasswordTouched] = useState(false);
+
+  const [loading, setLoading] = useState(false);
+
+  const validateName = (name: string) => {
+    return name.trim().length > 0;
+  };
 
   const validateEmail = (email: string) => {
     const emailRegex = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/;
@@ -43,46 +55,96 @@ const RegisterPage = () => {
     }
   };
 
+  const handleRegisterClick = async (event: React.FormEvent) => {
+    event.preventDefault();
+    setLoading(true);
+    try {
+      setNameTouched(true);
+      setEmailTouched(true);
+      setPasswordTouched(true);
+
+      const isNameValid = validateName(name);
+      const isEmailValid = validateEmail(email);
+      const isPasswordValid = validatePassword(password);
+
+      setNameError(isNameValid ? "" : "Name is required.");
+      setEmailError(isEmailValid ? "" : "Invalid email format.");
+      setPasswordError(
+        isPasswordValid ? "" : "Wrong password. Please check and retry."
+      );
+
+      if (isNameValid && isEmailValid && isPasswordValid) {
+        const response = await axios.post(
+          "http://localhost:5000/api/v1/auth/register",
+          {
+            name,
+            email,
+            password,
+          }
+        );
+        console.log(response);
+        toast.success(response.data.message || "Account created successfully!");
+
+        setName("");
+        setEmail("");
+        setPassword("");
+
+        navigate("/");
+      }
+    } catch (error: any) {
+      const errorMessage =
+        error.response?.data?.message ||
+        "Failed to create account. Please try again.";
+      toast.error(errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="authOuter">
       <div className="authInner">
         <div className="authInner-left element"></div>
         <div className="authInner-right element">
           <h2 className="auth-heading">REGISTER</h2>
-          <div className="inputField-box">
-            <InputField
-              className="input"
-              type="text"
-              placeholder="Enter you name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-          </div>
-          <div className="inputField-box">
-            <InputField
-              className="input"
-              type="email"
-              placeholder="Enter you email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              onBlur={handleEmailBlur}
-            />
-            {emailTouched && <p className="error-text">{emailError}</p>}
-          </div>
-          <div className="inputField-box">
-            <InputField
-              className="input"
-              type="password"
-              placeholder="Enter you password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              onBlur={handlePasswordChange}
-            />
-            {passwordTouched && <p className="error-text">{passwordError}</p>}
-          </div>
-          <div className="button-box">
-            <Button className="button" type="submit" name="REGISTER" />
-          </div>
+          <form onSubmit={handleRegisterClick}>
+            <div className="inputField-box">
+              <InputField
+                className="input"
+                type="text"
+                placeholder="Enter you name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                onBlur={() => setNameTouched(true)}
+              />
+              {nameTouched && nameError && (<p className="error-text">{nameError}</p>)}
+            </div>
+            <div className="inputField-box">
+              <InputField
+                className="input"
+                type="email"
+                placeholder="Enter you email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                onBlur={handleEmailBlur}
+              />
+              {emailTouched && <p className="error-text">{emailError}</p>}
+            </div>
+            <div className="inputField-box">
+              <InputField
+                className="input"
+                type="password"
+                placeholder="Enter you password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                onBlur={handlePasswordChange}
+              />
+              {passwordTouched && <p className="error-text">{passwordError}</p>}
+            </div>
+            <div className="button-box">
+              <Button className="button" type="submit" name="REGISTER" />
+            </div>
+          </form>
           <div className="bottom-box">
             <p>
               Create an account?{" "}

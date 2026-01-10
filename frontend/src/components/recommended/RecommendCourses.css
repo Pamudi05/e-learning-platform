@@ -1,0 +1,19 @@
+.recommendOuter {
+  min-height: auto;
+  background-color: #16a085;
+  padding: 50px;
+}
+
+.recommendOuter h2 {
+  font-size: 30px;
+  color: white;
+  font-weight: 400;
+}
+
+.recommendInner {
+  margin-top: 30px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  justify-items: center;
+}
