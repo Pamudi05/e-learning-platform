@@ -90,6 +90,7 @@ const loginUser = async (req, res) => {
         role: existingUser.role,
       },
     });
+    console.log(token)
     
   } catch (error) {
     console.error("LOGIN ERROR:", error.message);

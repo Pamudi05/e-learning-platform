@@ -21,10 +21,111 @@ const createCourse = async (req, res) => {
       message: "Course Created Successfully",
       data: result,
     });
-
   } catch (error) {
     res.status(500).json({ message: "Something went wrong", error: error });
   }
 };
 
-export default { createCourse };
+const findAllCourses = (req, res) => {
+  try {
+    const searchText = req.query.searchText || "";
+
+    const query = {
+      $or: [
+        { name: new RegExp(searchText, "i") },
+        { category: new RegExp(searchText, "i") },
+      ],
+    };
+
+    Course.find(query).then((response) => {
+      const allCourses = response.map((course) => ({
+        ...course._doc,
+        image: course.image.map(
+          (img) => `${req.protocol}://${req.get("host")}/${img}`
+        ),
+      }));
+
+      return res.status(200).json(allCourses);
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Internal server error",
+      error: error,
+    });
+  }
+};
+
+const findById = (req, res) => {
+  try {
+    const courseId = req.params.id;
+
+    Course.findById(courseId)
+      .then((result) => {
+        if (result) {
+          const course = {
+            ...result._doc,
+            image: result.image.map(
+              (img) => `${req.protocol}://${req.get("host")}/${img}`
+            ),
+          };
+          res.status(200).json({ data: course });
+        } else {
+          res.status(404).json({ message: "Course Not Found" });
+        }
+      })
+      .catch((error) => {
+        res.status(500).json({ message: "Something went wrong", error: error });
+      });
+  } catch (error) {
+    res.status(500).json({ message: "Internal Error", error: error });
+  }
+};
+
+const update = async (req, res) => {
+  try {
+    const updateCourses = {
+      title: req.body.title,
+      description: req.body.description,
+      category: req.body.category,
+    };
+
+    if (req.files && req.files.length > 0) {
+      const image = req.files.map((file) => file.path);
+      updateCourses.image = image;
+    }
+
+    const update = await Course.findOneAndUpdate(
+      { _id: req.params.id },
+      { $set: updateCourses },
+      { new: true }
+    );
+
+    if (!update) {
+      return res.status(404).json({ message: "Course not found" });
+    }
+    return res.status(200).json({
+      message: "Course Successfully Updated",
+      update,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+const deleteData = async (req, res) => {
+  try {
+    const deleteData = await Course.findOneAndDelete({ _id: req.params.id });
+
+    if (!deleteData) {
+      return res.status(404).json({ message: "Course not found" });
+    }
+    return res.status(200).json({
+      message: "Course Successfully Deleted",
+      deleteData,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export default { createCourse, findAllCourses, findById, update, deleteData };
