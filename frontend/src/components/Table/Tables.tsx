@@ -8,7 +8,7 @@ interface Action {
 }
 
 interface TableRow {
-  id?: number;
+  _id?: number;
   title?: string;
   category?: string;
   price?: number;
@@ -20,7 +20,7 @@ interface TableRow {
   active?: string;
 }
 
-interface ColumnConfig {
+export interface ColumnConfig {
   key: keyof TableRow | "actions" | "image";
   header: string;
   render?: (row: any) => React.ReactNode;
@@ -35,22 +35,22 @@ interface TableDataProps {
 const Tables = ({ rows, columns, onRowClick }: TableDataProps) => {
   return (
     <table className="tableOuter">
-      <thead>
+      <thead className="tableHeader">
         <tr>
           {columns.map((col, index) => (
             <th key={index}> {col.header} </th>
           ))}
         </tr>
       </thead>
-      <tbody>
+      <tbody className="tableBody">
         {rows.map((row) => (
-          <tr key={row.id} onClick={() => onRowClick && onRowClick(row)}>
+          <tr key={row._id} onClick={() => onRowClick && onRowClick(row)}>
             {columns.map((col, index) => {
               if (col.key === "image") {
                 return (
                   <td key={index}>
                     {row.image && (
-                      <img src={row.image} height={40} width={40} alt="item" />
+                      <img src={row.image} height={40} width={40} alt="course" />
                     )}
                   </td>
                 );

@@ -40,7 +40,7 @@
   filter: brightness(0) invert(1);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 940px) {
   .sidebar-button {
     width: 150px;
     height: 38px;
@@ -48,7 +48,7 @@
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 846px) {
   .sidebar-outer {
     width: 70px;
     padding-top: 20px;
@@ -63,10 +63,6 @@
 
   .sidebar-button p {
     display: none;
-  }
-
-  .sidebar-list {
-    gap: 15px;
   }
 }
 

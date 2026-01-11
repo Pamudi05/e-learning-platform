@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Button from "../../components/Button/Button";
 import InputField from "../../components/InputFiled/InputField";
 import { useState } from "react";
-import axios from "axios";
+import AxiosInstance from "../../config/axiosInstance";
 import { toast } from "react-toastify";
 
 const LoginPage = () => {
@@ -62,8 +62,7 @@ const LoginPage = () => {
       );
 
       if (isEmailValid && isPasswordValid) {
-        const response = await axios.post(
-          "http://localhost:5000/api/v1/auth/login",
+        const response = await AxiosInstance.post("/auth/login",
           {
             email,
             password,
