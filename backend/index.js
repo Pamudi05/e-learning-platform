@@ -7,6 +7,8 @@ import cookieParser from "cookie-parser";
 import openAiRouter from './routes/openAIRoute.js'
 import authRouter from './routes/authRoutes.js'
 import courseRouter from './routes/courseRoutes.js'
+import userRouter from './routes/userRoute.js'
+import entrollRouter from './routes/entrollRoutes.js'
 
 dotenv.config();
 
@@ -26,6 +28,8 @@ app.use(cookieParser());
 app.use("/api/v1/openai/", openAiRouter);
 app.use("/api/v1/auth/", authRouter);
 app.use("/api/v1/course/", courseRouter);
+app.use("/api/v1/users/", userRouter);
+app.use("/api/v1/entroll/", entrollRouter);
 
 app.use('/uploads', express.static('uploads'));
 
