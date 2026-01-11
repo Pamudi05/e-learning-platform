@@ -211,34 +211,29 @@
 
 /* ----------------------Course----------------------- */
 
-.courseOuter{
+.courseOuter {
   display: flex;
   flex-direction: column;
 }
 
-.courseTop{
+.courseTop {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.courseMiddle{
- padding: 20px;
+.courseMiddle {
+  padding: 20px;
 }
 
-.courseBottom{
-  display: flex;
-  justify-content: flex-end;
-}
-
-.courseTop button , .courseBottom button{
+.courseTop button {
   width: 200px !important;
   height: 40px !important;
   margin-right: 30px !important;
   margin-top: 0 !important;
 }
 
-.pagination{
+.pagination {
   margin: 10px;
   padding: 10px;
   display: flex;
@@ -246,18 +241,95 @@
   align-items: center;
 }
 
-.pagination button{
+.pagination button {
   width: 70px;
   height: 30px;
   border: 2px solid #16a085;
-  background-color: rgba(22, 160, 133,0.5);
+  background-color: rgba(22, 160, 133, 0.5);
   border-radius: 10px;
   color: #16a085;
   font-weight: 500;
 }
 
-.pagination span{
+.pagination span {
   color: #16a085;
   font-weight: 500;
   margin: 0 10px;
 }
+
+/* ----------------------AddCourse----------------------- */
+
+.addCourseOuter {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.addCourseInner {
+  width: 90%;
+  border: 2px solid #16a085;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px;
+  gap: 20px;
+}
+
+.courseImageDragger {
+  width: 70%;
+  height: 130px;
+  border: 2px dashed #16a085;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.courseImageDragger img {
+  width: 40px;
+}
+
+.ImageText {
+  color: #16a085;
+}
+
+.courseImageDragger input {
+  display: none;
+}
+
+.courseDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 70%;
+}
+
+.courseDetails h2 {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 4px;
+  color: #16a085;
+}
+
+.courseDetails input {
+  width: 650px !important;
+}
+
+.courseButton{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-right: 70px;
+}
+
+.errorImageText{
+  color: #e74c3c;
+  font-size: 12px;
+}
+
+
