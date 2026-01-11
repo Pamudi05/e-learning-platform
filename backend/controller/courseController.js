@@ -12,6 +12,8 @@ const createCourse = async (req, res) => {
       title: req.body.title,
       description: req.body.description,
       category: req.body.category,
+      price: req.body.price,
+      duration: req.body.duration,
       image: image,
       instructorId: req.user.userId,
     });
@@ -26,26 +28,37 @@ const createCourse = async (req, res) => {
   }
 };
 
-const findAllCourses = (req, res) => {
+const findAllCourses = async (req, res) => {
   try {
     const searchText = req.query.searchText || "";
 
+    const pageNumber = parseInt(req.query.pageNumber) || 1;
+    const pageSize = parseInt(req.query.size) || 5;
+
     const query = {
       $or: [
-        { name: new RegExp(searchText, "i") },
+        { title: new RegExp(searchText, "i") },
         { category: new RegExp(searchText, "i") },
       ],
     };
 
-    Course.find(query).then((response) => {
-      const allCourses = response.map((course) => ({
-        ...course._doc,
-        image: course.image.map(
-          (img) => `${req.protocol}://${req.get("host")}/${img}`
-        ),
-      }));
+    const total = await Course.countDocuments(query);
+    const courses = await Course.find(query)
+      .skip((pageNumber - 1) * pageSize)
+      .limit(pageSize);
 
-      return res.status(200).json(allCourses);
+    const allCourses = courses.map((course) => ({
+      ...course._doc,
+      image: course.image.map(
+        (img) => `${req.protocol}://${req.get("host")}/${img}`
+      ),
+    }));
+
+    res.status(200).json({
+      total,
+      pageNumber,
+      pageSize,
+      courses: allCourses,
     });
   } catch (error) {
     res.status(500).json({
@@ -87,6 +100,8 @@ const update = async (req, res) => {
       title: req.body.title,
       description: req.body.description,
       category: req.body.category,
+      price: req.body.price,
+      duration: req.body.duration,
     };
 
     if (req.files && req.files.length > 0) {
