@@ -145,6 +145,14 @@
   justify-items: center;
 }
 
+.homepageInner .no {
+  color: gray;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 .homepageMiddle {
   height: 50px;
   padding: 20px;
@@ -162,6 +170,10 @@
 @media (max-width: 768px) {
   .homepageInner {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .homepageInner .no {
+    font-size: 13px;
   }
 }
 
@@ -319,7 +331,7 @@
   width: 650px !important;
 }
 
-.courseButton{
+.courseButton {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -327,9 +339,7 @@
   margin-right: 70px;
 }
 
-.errorImageText{
+.errorImageText {
   color: #e74c3c;
   font-size: 12px;
 }
-
-

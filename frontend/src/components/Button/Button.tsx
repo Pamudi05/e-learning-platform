@@ -13,6 +13,7 @@ interface ButtonProps {
   fontWeight?: string;
   outline?: string;
   marginTop?: string;
+  disabled?: boolean
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -30,12 +31,14 @@ const Button: React.FC<ButtonProps> = ({
   fontWeight = "600",
   outline = "none",
   marginTop = "30px",
+  disabled
 }) => {
   return (
     <button
       className={className}
       type={type}
       onClick={onButtonClick}
+      disabled={disabled}
       style={{
         color,
         backgroundColor,

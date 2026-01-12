@@ -26,7 +26,7 @@ function App() {
         </Route>
 
         <Route path="/user" element={<StudentPage />} />
-        <Route path="/coursedetails" element={<CourseDetails />} />
+        <Route path="/coursedetails/:id" element={<CourseDetails />} />
         <Route path="/entrolledcourses" element={<EntrolledCourses />} />
       </Routes>
     </Router>

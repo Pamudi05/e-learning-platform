@@ -5,10 +5,10 @@ const RecommendCourses = () => {
         <div className="recommendOuter">
             <h2>Recommended for you</h2>
             <div className='recommendInner'>
+                {/* <CourseCard/>
                 <CourseCard/>
                 <CourseCard/>
-                <CourseCard/>
-                <CourseCard/>
+                <CourseCard/> */}
             </div>
         </div>
     );

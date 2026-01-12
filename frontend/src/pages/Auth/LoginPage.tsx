@@ -9,7 +9,6 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [emailTouched, setEmailTouched] = useState(false);
@@ -39,7 +38,9 @@ const LoginPage = () => {
     setPasswordTouched(true);
 
     if (!validatePassword(password)) {
-      setPasswordError("Password must be at least 8 characters.At least one letter and one number");
+      setPasswordError(
+        "Password must be at least 8 characters.At least one letter and one number"
+      );
     } else {
       setPasswordError("");
     }
@@ -47,9 +48,7 @@ const LoginPage = () => {
 
   const handleLoginClick = async (event: React.FormEvent) => {
     event.preventDefault();
-    setLoading(true);
     try {
-      
       setEmailTouched(true);
       setPasswordTouched(true);
 
@@ -62,7 +61,8 @@ const LoginPage = () => {
       );
 
       if (isEmailValid && isPasswordValid) {
-        const response = await AxiosInstance.post("/auth/login",
+        const response = await AxiosInstance.post(
+          "/auth/login",
           {
             email,
             password,
@@ -78,13 +78,16 @@ const LoginPage = () => {
           navigate("/user");
         }
 
+        const user = response.data.user;
+
+        localStorage.setItem("userId", user.userId);
+
         toast.success(response.data.message || "Login successfully");
       }
-    } catch (error:any) {
-      const errorMessage = error.response?.data?.message || "Failed to login. Please try again.";
+    } catch (error: any) {
+      const errorMessage =
+        error.response?.data?.message || "Failed to login. Please try again.";
       toast.error(errorMessage);
-    }finally {
-      setLoading(false);
     }
   };
 
