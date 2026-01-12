@@ -4,7 +4,8 @@ import authMiddleware from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-router.post('/enroll', authMiddleware.verifyToken, entrollController.addToEntroll);
-router.get('/getAllEntrollCourses', authMiddleware.verifyToken, entrollController.getUserEnrolledCourses);
+router.post('/addToenroll', authMiddleware.verifyToken, authMiddleware.userOnly, entrollController.addToEntroll);
+router.get('/getAllEntrollCourses', authMiddleware.verifyToken, authMiddleware.userOnly, entrollController.getUserEnrolledCourses);
+router.get("/getEnrollById/:userId/:courseId",authMiddleware.verifyToken, authMiddleware.userOnly, entrollController.getEnrollById);
 
 export default router;

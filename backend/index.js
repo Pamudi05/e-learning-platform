@@ -29,7 +29,7 @@ app.use("/api/v1/openai/", openAiRouter);
 app.use("/api/v1/auth/", authRouter);
 app.use("/api/v1/course/", courseRouter);
 app.use("/api/v1/users/", userRouter);
-app.use("/api/v1/entroll/", entrollRouter);
+app.use("/api/v1/enroll/", entrollRouter);
 
 app.use('/uploads', express.static('uploads'));
 
