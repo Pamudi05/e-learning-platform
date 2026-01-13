@@ -70,17 +70,16 @@ const LoginPage = () => {
           { withCredentials: true }
         );
 
-        const role = response.data.user.role;
+        // const role = response.data.user.role;
+        const user = response.data.user;
 
-        if (role === "admin") {
-          navigate("/admin");
+        localStorage.setItem("user", JSON.stringify(user));
+
+        if (user.role === "admin") {
+          navigate("/admin/courses");
         } else {
           navigate("/user");
         }
-
-        const user = response.data.user;
-
-        localStorage.setItem("userId", user.userId);
 
         toast.success(response.data.message || "Login successfully");
       }

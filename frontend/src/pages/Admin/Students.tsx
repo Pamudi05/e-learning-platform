@@ -1,5 +1,3 @@
-import { useNavigate } from "react-router-dom";
-import Button from "../../components/Button/Button";
 import InputField from "../../components/InputFiled/InputField";
 import Table, { ColumnConfig } from "../../components/Table/Tables";
 import { useEffect, useState } from "react";
@@ -7,60 +5,54 @@ import AxiosInstance from "../../config/axiosInstance"
 import { toast } from "react-toastify";
 
 const Students = () => {
-  const navigate = useNavigate();
   const [searchText, setSearchText] = useState("");
-  const [courses, setCourses] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [students, setStudents] = useState([]);
 
   const [pageNumber, setPageNumber] = useState(1);
-  const [pageSize] = useState(5);
-  const [totalCourses, setTotalCourses] = useState(0);
+  const [pageSize] = useState(10);
+  const [totalStudents, setTotalStudents] = useState(0);
 
-  const getAllCourses = async () => {
-    setLoading(true);
+  const getAllEnrolledStudents = async () => {
     try {
-      const response = await AxiosInstance.get("/course/findAll", {
+      const response = await AxiosInstance.get("/enroll/getAllEnrolledStudents", {
         params: { searchText, pageNumber, size: pageSize },
       });
-      setCourses(response.data.courses);
-      setTotalCourses(response.data.total);
+      setStudents(response.data.students);
+      setTotalStudents(response.data.total);
       console.log("Response : ", response);
     } catch (error) {
       toast.error("Can not load. Please try again");
       console.log(error);
-    } finally {
-      setLoading(false);
     }
   };
 
   useEffect(() => {
-    getAllCourses();
+    getAllEnrolledStudents();
   }, [pageNumber, pageSize, searchText]);
 
   const columns: ColumnConfig[] = [
-    { key: "image", header: "Image" },
-    { key: "title", header: "Title" },
-    { key: "description", header: "Description" },
-    { key: "price", header: "Price" },
-    { key: "category", header: "Category" },
-    { key: "duration", header: "Duration" },
-    { key: "actions", header: "Action" },
+    { key: "studentName", header: "Student Name" },
+    { key: "email", header: "Email" },
+    { key: "courseName", header: "Course" },
+    { key: "enrolledAt", header: "Enrolled At" ,render: (row) =>
+        new Date(row.enrolledAt).toLocaleDateString(),
+    },
   ];
 
-  const totalPages = Math.ceil(totalCourses / pageSize);
+  const totalPages = Math.ceil(totalStudents  / pageSize);
 
   return (
     <div className="courseOuter">
       <div className="courseTop">
         <InputField
           type="text"
-          placeholder="Search by title and category"
+          placeholder="Search by student name, email, course name"
           value={searchText}
           onChange={(e) => setSearchText(e.target.value)}
         />
       </div>
       <div className="courseMiddle">
-        <Table rows={courses} columns={columns} />{" "}
+        <Table rows={students} columns={columns}/>
         <div className="pagination">
           <button
             disabled={pageNumber === 1}

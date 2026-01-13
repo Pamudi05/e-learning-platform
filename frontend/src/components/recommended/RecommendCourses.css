@@ -11,6 +11,24 @@
 }
 
 .recommendInner {
+  margin: 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.recommendInner input{
+  width: 70% !important;
+}
+
+.recommendInner button{
+  width: 70% !important;
+  background-color: white !important;
+  color: #16a085 !important;
+  margin-top: 0 !important;
+}
+
+.recommendBottom {
   margin-top: 30px;
   display: grid;
   grid-template-columns: repeat(4, 1fr);

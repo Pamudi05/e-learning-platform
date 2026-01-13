@@ -16,6 +16,10 @@ interface TableRow {
   duration?: string;
   image?: string;
   content?: string;
+  studentName?: string;
+  email?: string;
+  courseName?: string;
+  enrolledAt?: string;
   actions?: Action[];
   active?: string;
 }
