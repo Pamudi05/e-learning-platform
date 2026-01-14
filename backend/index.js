@@ -22,6 +22,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 connectToDatabase();
+
+app.set("trust proxy", 1);
+
 app.use(cookieParser());
 
 app.use(
@@ -30,8 +33,6 @@ app.use(
     credentials: true,
   })
 );
-
-app.set("trust proxy", 1);
 
 app.use("/api/v1/openai/", openAiRouter);
 app.use("/api/v1/auth/", authRouter);
