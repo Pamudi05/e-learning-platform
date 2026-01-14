@@ -1,8 +1,11 @@
 import mongoose from "mongoose";
+import {config} from 'dotenv';
+
+config();
 
 const connectToDatabase = async () => {
     try {
-        await mongoose.connect("mongodb://localhost:27017/e_learning_db");
+        await mongoose.connect(process.env.MONGO_URI);
         console.log("MongoDb Connected");
     } catch (error) {
         console.log(`Database Connection Error : ${error}`);
