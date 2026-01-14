@@ -79,8 +79,8 @@ const loginUser = async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true,
       maxAge: 5 * 60 * 60 * 1000,
-      secure: false,
-      sameSite: "lax",
+      secure: true,
+      sameSite: "none",
     });
 
     res.status(200).json({
@@ -92,7 +92,7 @@ const loginUser = async (req, res) => {
       },
     });
 
-    console.log("token",token);
+    console.log("token", token);
   } catch (error) {
     console.error("LOGIN ERROR:", error.message);
     res.status(500).json({ message: "something went wrong", error: error });
