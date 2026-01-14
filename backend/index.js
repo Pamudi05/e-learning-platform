@@ -41,15 +41,19 @@ app.use("/api/v1/content/", contentRouter);
 app.use("/uploads", express.static("uploads"));
 
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "../frontend/build")));
+  const frontendBuildPath = path.join(__dirname, "../frontend/build");
 
-  // app.get("*", (req, res) => {
-  //     res.sendFile(path.join(__dirname, "../frontend/build/index.html"));
-  // });
-  app.get("/*", (req, res) => {
-    res.sendFile(path.join(__dirname, "../frontend/build/index.html"));
+  app.use(express.static(frontendBuildPath));
+
+  app.use((req, res, next) => {
+    if (req.method === "GET" && !req.path.startsWith("/api")) {
+      res.sendFile(path.join(frontendBuildPath, "index.html"));
+    } else {
+      next();
+    }
   });
 }
+
 
 const PORT = process.env.PORT || 5000;
 
