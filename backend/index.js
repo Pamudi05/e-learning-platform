@@ -41,7 +41,7 @@ const __dirname = path.dirname(__filename);
 const buildPath = path.join(__dirname, "../frontend/build");
 app.use(express.static(buildPath));
 
-app.get("/*", function(req,res){
+app.get("/:path(*)", function(req,res){
   res.sendFile(
     path.join(buildPath, "index.html"),
     function(err){
