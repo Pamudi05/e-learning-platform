@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import connectToDatabase from "./db/dbConnection.js";
 import cookieParser from "cookie-parser";
+import path from "path";
 
 import openAiRouter from './routes/openAIRoute.js'
 import authRouter from './routes/authRoutes.js'
@@ -32,6 +33,22 @@ app.use("/api/v1/enroll/", entrollRouter);
 app.use("/api/v1/content/", contentRouter);
 
 app.use('/uploads', express.static('uploads'));
+
+const _dirname = path.dirnam("");
+const buildPath = path.join(_dirname, "../frontend/build");
+
+app.use(express.static(buildPath));
+
+app.get("/*", function(req,res){
+  res.sendFile(
+    path.join(__dirname, "../frontend/build/index.html"),
+    function(err){
+      if(err){
+        res.status(500).send(err);
+      }
+    }
+  )
+})
 
 const PORT = process.env.PORT;
 
