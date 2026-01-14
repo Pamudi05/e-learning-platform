@@ -55,12 +55,6 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-app.get("/test-cookie", (req, res) => {
-  console.log("Cookies:", req.cookies);
-  res.json({ cookies: req.cookies });
-});
-
-
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
