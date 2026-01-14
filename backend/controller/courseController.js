@@ -36,7 +36,7 @@ const createCourse = async (req, res) => {
       console.log(courseContent)
     }
 
-    console.log(result)
+    console.log('create Course' , result)
     res.status(201).json({
       message: "Course Created Successfully",
       data: result,
