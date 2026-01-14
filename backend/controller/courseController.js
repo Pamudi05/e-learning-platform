@@ -42,6 +42,7 @@ const createCourse = async (req, res) => {
       data: result,
     });
   } catch (error) {
+    console.error("CREATE COURSE ERROR:", error);
     res.status(500).json({ message: "Something went wrong", error: error });
   }
 };

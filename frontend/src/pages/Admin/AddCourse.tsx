@@ -139,7 +139,8 @@ const AddCourse = () => {
         },
       });
 
-      console.log(response)
+      console.log('response', response)
+      console.log('response data', response.data)
 
       toast.success(response.data.message || "Course Created successfully!");
     } catch (error) {
