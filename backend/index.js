@@ -8,6 +8,7 @@ import openAiRouter from './routes/openAIRoute.js'
 import authRouter from './routes/authRoutes.js'
 import courseRouter from './routes/courseRoutes.js'
 import entrollRouter from './routes/entrollRoutes.js'
+import contentRouter from './routes/contentRoute.js'
 
 dotenv.config();
 
@@ -28,6 +29,7 @@ app.use("/api/v1/openai/", openAiRouter);
 app.use("/api/v1/auth/", authRouter);
 app.use("/api/v1/course/", courseRouter);
 app.use("/api/v1/enroll/", entrollRouter);
+app.use("/api/v1/content/", contentRouter);
 
 app.use('/uploads', express.static('uploads'));
 

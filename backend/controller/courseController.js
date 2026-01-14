@@ -1,3 +1,4 @@
+import Content from "../model/contentModel.js";
 import Course from "../model/courseModel.js";
 
 const createCourse = async (req, res) => {
@@ -7,6 +8,11 @@ const createCourse = async (req, res) => {
     }
 
     const image = req.files.map((file) => file.path);
+
+    let contents = [];
+    if (req.body.contents) {
+      contents = JSON.parse(req.body.contents);
+    }
 
     const course = new Course({
       title: req.body.title,
@@ -19,6 +25,17 @@ const createCourse = async (req, res) => {
     });
 
     const result = await course.save();
+
+    if (contents.length > 0) {
+      const courseContent = contents.map((item, index) => ({
+        courseId: result._id,
+        title: item.title,
+        order: index + 1,
+      }));
+      await Content.insertMany(courseContent);
+      console.log(courseContent)
+    }
+
     res.status(201).json({
       message: "Course Created Successfully",
       data: result,
@@ -109,6 +126,11 @@ const update = async (req, res) => {
       updateCourses.image = image;
     }
 
+    let contents = [];
+    if (req.body.contents) {
+      contents = JSON.parse(req.body.contents);
+    }
+
     const update = await Course.findOneAndUpdate(
       { _id: req.params.id },
       { $set: updateCourses },
@@ -117,6 +139,18 @@ const update = async (req, res) => {
 
     if (!update) {
       return res.status(404).json({ message: "Course not found" });
+    }
+
+    if (contents.length > 0) {
+      await Content.deleteMany({ courseId: update._id });
+      
+      const courseContent = contents.map((item, index) => ({
+        courseId: update._id,
+        title: item.title,
+        order: index + 1,
+      }));
+      await Content.insertMany(courseContent);
+      console.log(courseContent)
     }
     return res.status(200).json({
       message: "Course Successfully Updated",
