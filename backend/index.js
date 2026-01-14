@@ -22,6 +22,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 connectToDatabase();
+app.use(cookieParser());
 
 app.use(
   cors({
@@ -30,7 +31,6 @@ app.use(
   })
 );
 
-app.use(cookieParser());
 app.set("trust proxy", 1);
 
 app.use("/api/v1/openai/", openAiRouter);
