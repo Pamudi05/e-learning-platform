@@ -3,9 +3,8 @@ import Course from "../model/courseModel.js";
 
 const createCourse = async (req, res) => {
   try {
-    ('-----------------------start--------------------------------')
-    if (!req.files || req.files.length === 0) {
-      return res.status(400).json({ message: "No files uploaded" });
+    if (!req.file) {
+      return res.status(400).json({ message: "No file uploaded" });
     }
 
     const image = req.files.map((file) => file.path);
@@ -34,10 +33,10 @@ const createCourse = async (req, res) => {
         order: index + 1,
       }));
       await Content.insertMany(courseContent);
-      console.log(courseContent)
+      console.log(courseContent);
     }
 
-    console.log('create Course' , result)
+    console.log("create Course", result);
     res.status(201).json({
       message: "Course Created Successfully",
       data: result,
@@ -146,14 +145,14 @@ const update = async (req, res) => {
 
     if (contents.length > 0) {
       await Content.deleteMany({ courseId: update._id });
-      
+
       const courseContent = contents.map((item, index) => ({
         courseId: update._id,
         title: item.title,
         order: index + 1,
       }));
       await Content.insertMany(courseContent);
-      console.log(courseContent)
+      console.log(courseContent);
     }
     return res.status(200).json({
       message: "Course Successfully Updated",
