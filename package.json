@@ -4,8 +4,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node backend/index.js",
-    "dev": "cd backend && nodemon index.js"
+    "heroku-postbuild": "cd frontend && npm install && npm run build",
+    "dev": "concurrently \"cd frontend && npm start\" \"cd backend && nodemon index.js\""
   },
   "repository": {
     "type": "git",
@@ -29,5 +29,8 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
 }

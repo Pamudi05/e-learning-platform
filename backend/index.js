@@ -4,7 +4,6 @@ import cors from "cors";
 import connectToDatabase from "./db/dbConnection.js";
 import cookieParser from "cookie-parser";
 import path from "path";
-import { fileURLToPath } from "url";
 
 import openAiRouter from './routes/openAIRoute.js'
 import authRouter from './routes/authRoutes.js'
@@ -35,15 +34,12 @@ app.use("/api/v1/content/", contentRouter);
 
 app.use('/uploads', express.static('uploads'));
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
 if (process.env.NODE_ENV === "production") {
-    const buildPath = path.join(__dirname, "../frontend/build");
+    const buildPath = path.join(__dirname, "frontend" , "build");
     app.use(express.static(buildPath));
 
-    app.get("/:anything(.*)", (req, res) => {
-        res.sendFile(path.join(buildPath, "index.html"));
+    app.get("*", (req, res) => {
+        res.sendFile(path.join(buildPath, "frontend", "build", "index.html"));
     });
 }
 
