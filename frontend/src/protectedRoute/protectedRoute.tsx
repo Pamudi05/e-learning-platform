@@ -8,7 +8,7 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, role }) => {
-  const user = JSON.parse(localStorage.getItem("user") || "null"); // assuming you store user info in localStorage
+  const user = JSON.parse(localStorage.getItem("user") || "null");
 
   if (!user) {
     return <Navigate to="/" replace />;

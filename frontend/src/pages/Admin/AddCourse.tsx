@@ -140,6 +140,8 @@ const AddCourse = () => {
         withCredentials: true,
       });
 
+      console.log(response)
+
       toast.success(response.data.message || "Course Created successfully!");
     } catch (error) {
       toast.error("Please try again");
