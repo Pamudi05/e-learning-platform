@@ -1,17 +1,23 @@
 import jwt from "jsonwebtoken";
+import {config} from 'dotenv';
+
+config();
 
 const secretKey = process.env.SECRET_KEY;
+console.log(secretKey , 'seceret')
+console.log(process.env.SECRET_KEY , 'seceret')
 
 const verifyToken = (req, res, next) => {
   const token = req.cookies.token;
   console.log('verifyToken' , req.cookies.token)
-  console.log('verifyToken co' , req.cookies)
 
   if (!token) {
     return res.status(403).json({ message: "Token is missing" });
   }
 
   try {
+    console.log(secretKey , 'seceret')
+console.log(secretKey , 'seceret')
     const decoded = jwt.verify(token, secretKey);
     req.user = decoded;
     next();
