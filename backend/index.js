@@ -20,7 +20,7 @@ app.use(express.urlencoded({ extended: true }));
 connectToDatabase();
 
 app.use(cors({
-  origin: "http://localhost:3000",
+  origin: process.env.FRONTEND_URL,
   credentials: true
 }));
 
@@ -34,14 +34,15 @@ app.use("/api/v1/content/", contentRouter);
 
 app.use('/uploads', express.static('uploads'));
 
-const _dirname = path.dirnam("");
-const buildPath = path.join(_dirname, "../frontend/build");
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
+const buildPath = path.join(__dirname, "../frontend/build");
 app.use(express.static(buildPath));
 
 app.get("/*", function(req,res){
   res.sendFile(
-    path.join(__dirname, "../frontend/build/index.html"),
+    path.join(buildPath, "index.html"),
     function(err){
       if(err){
         res.status(500).send(err);
