@@ -320,6 +320,22 @@
   width: 70%;
 }
 
+.courseDetails .content{
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.courseDetails .content button{
+  margin-top: 0 !important;
+  width: 50px !important;
+}
+
+.addChapter{
+ margin-top: 0 !important;
+ width: 100% !important;
+}
+
 .courseDetails h2 {
   font-size: 16px;
   font-weight: 600;

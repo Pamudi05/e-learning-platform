@@ -13,6 +13,7 @@ const AddCourse = () => {
   const [category, setCatogory] = useState("");
   const [price, setPrice] = useState("");
   const [duration, setDuration] = useState("");
+  const [contents, setContents] = useState([{ title: "" }]);
 
   const [file, setFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -23,6 +24,7 @@ const AddCourse = () => {
   const [categoryError, setCategoryError] = useState<string | null>(null);
   const [priceError, setPriceError] = useState<string | null>(null);
   const [durationError, setDurationError] = useState<string | null>(null);
+  const [contentError, setContentError] = useState<string | null>(null);
 
   const handleClick = () => {
     fileInputRef.current?.click();
@@ -114,6 +116,13 @@ const AddCourse = () => {
       setImgError("");
     }
 
+    if (contents.some((content) => !content.title.trim())) {
+      setContentError("All chapters are required");
+      return;
+    } else {
+      setContentError("");
+    }
+
     try {
       const formData = new FormData();
       formData.append("title", title);
@@ -122,6 +131,7 @@ const AddCourse = () => {
       formData.append("price", price);
       formData.append("duration", duration);
       formData.append("image", file);
+      formData.append("contents", JSON.stringify(contents));
 
       const response = await AxiosInstance.post("/course/create", formData, {
         headers: {
@@ -140,6 +150,21 @@ const AddCourse = () => {
     navigate("/admin/courses");
   };
 
+  const handleContentChange = (index: number, value: string) => {
+    const updated = [...contents];
+    updated[index].title = value;
+    setContents(updated);
+  };
+
+  const addContentField = () => {
+    setContents([...contents, { title: "" }]);
+  };
+
+  const removeContentField = (index: number) => {
+    const updated = contents.filter((_, i) => i !== index);
+    setContents(updated);
+  };
+
   return (
     <div className="addCourseOuter">
       <div className="addCourseInner">
@@ -150,7 +175,7 @@ const AddCourse = () => {
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
         >
-          <img  src={file ? URL.createObjectURL(file) : upload} alt="upload" />
+          <img src={file ? URL.createObjectURL(file) : upload} alt="upload" />
           <p className="ImageText">
             {file ? file.name : "Upload an course image"}
           </p>
@@ -219,6 +244,38 @@ const AddCourse = () => {
               onChange={(e) => setDuration(e.target.value)}
             />
             {durationError && <p className="errorImageText">{durationError}</p>}
+          </div>
+
+          <div>
+            <h2>Content</h2>
+            {contents.map((item, index) => (
+              <div
+                key={index}
+                style={{ display: "flex", gap: "10px", marginBottom: "10px" }}
+              >
+                <InputField
+                  type="text"
+                  placeholder={`Chapter ${index + 1}`}
+                  value={item.title}
+                  onChange={(e) => handleContentChange(index, e.target.value)}
+                />
+
+                {contents.length > 1 && (
+                  <button
+                    type="button"
+                    onClick={() => removeContentField(index)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    ❌
+                  </button>
+                )}
+              </div>
+            ))}
+
+            <button type="button" onClick={addContentField}>
+              ➕ Add Chapter
+            </button>
+            {contentError && <p className="errorImageText">{contentError}</p>}
           </div>
         </div>
 

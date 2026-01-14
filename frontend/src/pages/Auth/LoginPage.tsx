@@ -74,6 +74,7 @@ const LoginPage = () => {
         const user = response.data.user;
 
         localStorage.setItem("user", JSON.stringify(user));
+        localStorage.setItem("userId", user.userId);
 
         if (user.role === "admin") {
           navigate("/admin/courses");

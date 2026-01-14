@@ -1,20 +1,43 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./NavBar.css";
 import { useState } from "react";
 import person from "../../assets/person.png";
-import light from "../../assets/light_mode.png";
 import logout from "../../assets/logout.png";
 import arrowDown from "../../assets/arrow-down.png";
 import close from "../../assets/close.png";
 import menu from "../../assets/menu.png";
+import AxiosInstance from "../../config/axiosInstance";
+import { toast } from "react-toastify";
 
 interface NavBarProps {
   role?: "user" | "admin";
 }
 
 const NavBar = ({ role = "user" }: NavBarProps) => {
+  const Navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
+
+  const logOut = async () => {
+    try {
+      const response = await AxiosInstance.post(
+        "/auth/logout",
+        {},
+        { withCredentials: true }
+      );
+
+      localStorage.removeItem("user");
+      localStorage.removeItem("userId");
+
+      Navigate("/");
+
+      toast.success("LogOut Succesfully");
+      console.log("logout", response);
+    } catch (error) {
+      console.error("Logout failed", error);
+      toast.error("Logout failed");
+    }
+  };
 
   return (
     <div className="navBarOuter">
@@ -50,17 +73,8 @@ const NavBar = ({ role = "user" }: NavBarProps) => {
                   {profileOpen && (
                     <div className="profile-menu">
                       <ul>
-                        {/* <li>
-                          <Link to="/profile">PROFILE</Link>
-                        </li>
                         <li>
-                          <div>
-                            <span>APPEARANCE</span>
-                            <img src={light} alt="" />
-                          </div>
-                        </li> */}
-                        <li>
-                          <div>
+                          <div onClick={logOut}>
                             <span>LOGOUT</span>
                             <img src={logout} alt="" />
                           </div>
@@ -73,7 +87,10 @@ const NavBar = ({ role = "user" }: NavBarProps) => {
               </div>
             ) : (
               <li>
-                <Link to="/setting">SETTING</Link>
+                <div className="logout" onClick={logOut}>
+                  <span>LOGOUT</span>
+                  <img src={logout} alt="" />
+                </div>
               </li>
             )}
           </li>

@@ -69,6 +69,12 @@
   object-fit: cover;
 }
 
+.logout{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .menuicon {
   display: none;
   width: 25px;

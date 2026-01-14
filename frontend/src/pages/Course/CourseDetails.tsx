@@ -23,6 +23,9 @@ const CourseDetails: React.FC<CourseDetailsProps> = () => {
   const { id } = useParams<{ id: string }>();
   const [course, setCourse] = useState<CourseDetailsProps>({});
   const [isEnrolled, setIsEnrolled] = useState(false);
+  const [contents, setContents] = useState<{ title: string; order: number }[]>(
+    []
+  );
 
   const getCourse = async () => {
     try {
@@ -50,7 +53,7 @@ const CourseDetails: React.FC<CourseDetailsProps> = () => {
       });
       toast.success(response.data.message);
       navigate("/entrolledcourses");
-    } catch (error:any) {
+    } catch (error: any) {
       if (
         error.response &&
         error.response.data &&
@@ -64,22 +67,39 @@ const CourseDetails: React.FC<CourseDetailsProps> = () => {
   };
 
   const checkEnrollment = async () => {
-  if (!userId) return;
+    if (!userId) return;
 
-  try {
-    const response = await AxiosInstance.get(`/enroll/getEnrollById/${userId}/${id}`);
-    setIsEnrolled(response.data.isEnrolled);
-  } catch (error) {
-    console.log("Failed to check enrollment", error);
-  }
-};
+    try {
+      const response = await AxiosInstance.get(
+        `/enroll/getEnrollById/${userId}/${id}`
+      );
+      setIsEnrolled(response.data.isEnrolled);
+    } catch (error) {
+      console.log("Failed to check enrollment", error);
+    }
+  };
 
+  const getContentByCourse = async () => {
+    if (!id) {
+      console.log("No course id available!");
+      return;
+    }
 
-useEffect(() => {
+    try {
+      const response = await AxiosInstance.get(
+        `/content/getContentByCourse/${id}`
+      );
+      setContents(response.data.data || []);
+    } catch (error) {
+      console.log("Failed to fetch contents", error);
+    }
+  };
+
+  useEffect(() => {
     getCourse();
     checkEnrollment();
+    getContentByCourse();
   }, [id, userId]);
-
 
   return (
     <div className="coursedetailsOuter">
@@ -113,12 +133,13 @@ useEffect(() => {
           <h3>Course Content</h3>
           <div className="line"></div>
           <ul>
-            <li>Java Basics</li>
-            <li>Java Basics</li>
-            <li>Java Basics</li>
-            <li>Java Basics</li>
-            <li>Java Basics</li>
-            <li>Java Basics</li>
+            {Array.isArray(contents) && contents.length > 0 ? (
+              contents.map((content, index) => (
+                <li key={index}>{content.title}</li>
+              ))
+            ) : (
+              <li>No contents available</li>
+            )}
           </ul>
         </div>
       </div>

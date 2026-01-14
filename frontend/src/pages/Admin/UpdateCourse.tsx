@@ -3,8 +3,14 @@ import Button from "../../components/Button/Button";
 import InputField from "../../components/InputFiled/InputField";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import upload from "../../assets/upload.png";
 import AxiosInstance from "../../config/axiosInstance";
+
+interface ContentType {
+  _id?: string;
+  courseId?: string;
+  title: string;
+  order?: number;
+}
 
 const UpdateCourse = () => {
   const navigate = useNavigate();
@@ -16,13 +22,13 @@ const UpdateCourse = () => {
   const [category, setCatogory] = useState("");
   const [price, setPrice] = useState("");
   const [duration, setDuration] = useState("");
-   const [courseImage, setCourseImage] = useState('');
+  const [courseImage, setCourseImage] = useState("");
+  const [contents, setContents] = useState<ContentType[]>([]);
 
   const [file, setFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [imgError, setImgError] = useState<string | null>(null);
-  
 
   const handleClick = () => {
     fileInputRef.current?.click();
@@ -73,7 +79,7 @@ const UpdateCourse = () => {
 
     setImgError("");
     setFile(droppedFile);
-    setCourseImage(URL.createObjectURL(droppedFile)); 
+    setCourseImage(URL.createObjectURL(droppedFile));
   };
 
   const handleUpdateClick = async () => {
@@ -89,6 +95,7 @@ const UpdateCourse = () => {
       formData.append("category", category);
       formData.append("price", price);
       formData.append("duration", duration);
+      formData.append("contents", JSON.stringify(contents));
 
       if (file) {
         formData.append("image", file);
@@ -128,12 +135,42 @@ const UpdateCourse = () => {
     setCourseImage(response.data.data.image?.[0] || null);
   };
 
+  const getContentByCourse = async () => {
+    if (!id) return;
+
+    try {
+      const response = await AxiosInstance.get(
+        `/content/getContentByCourse/${id}`
+      );
+      console.log("Course contents:", response.data.data); // check what comes from backend
+      setContents(response.data.data || []);
+    } catch (error) {
+      console.log("Failed to fetch course contents:", error);
+    }
+  };
+
   useEffect(() => {
     getCourseById();
+    getContentByCourse();
   }, [id]);
 
-  const parts = courseImage.split('/');
+  const parts = courseImage.split("/");
   const courseImageName = parts[parts.length - 1];
+
+  const handleContentChange = (index: number, value: string) => {
+    const updated = [...contents];
+    updated[index].title = value;
+    setContents(updated);
+  };
+
+  const addContentField = () => {
+    setContents([...contents, { title: "", order: contents.length + 1 }]);
+  };
+
+  const removeContentField = (index: number) => {
+    const updated = contents.filter((_, i) => i !== index);
+    setContents(updated);
+  };
 
   return (
     <div className="addCourseOuter">
@@ -145,9 +182,13 @@ const UpdateCourse = () => {
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
         >
-          <img src={courseImage } alt="upload" />
+          <img src={courseImage} alt="upload" />
           <p className="ImageText">
-            {file ? file.name : courseImage ? courseImageName : "Upload an course image"}
+            {file
+              ? file.name
+              : courseImage
+              ? courseImageName
+              : "Upload an course image"}
           </p>
           <input
             type="file"
@@ -177,7 +218,6 @@ const UpdateCourse = () => {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
-
           </div>
 
           <div>
@@ -209,6 +249,35 @@ const UpdateCourse = () => {
               onChange={(e) => setDuration(e.target.value)}
             />
           </div>
+
+          <div>
+            <h2>Content</h2>
+            {contents.map((item, index) => (
+              <div className="content" key={index}>
+                <InputField
+                  type="text"
+                  placeholder={`Chapter ${index + 1}`}
+                  value={item.title}
+                  onChange={(e) => handleContentChange(index, e.target.value)}
+                />
+
+                {contents.length > 1 && (
+                  <Button
+                    type="button"
+                    onButtonClick={() => removeContentField(index)}
+                    name="❌"
+                  />
+                )}
+              </div>
+            ))}
+
+            <Button
+              className="addChapter"
+              type="button"
+              onButtonClick={addContentField}
+              name="+ Add Chapter"
+            />
+          </div>
         </div>
 
         <div className="courseButton">
@@ -221,4 +290,3 @@ const UpdateCourse = () => {
 };
 
 export default UpdateCourse;
-
