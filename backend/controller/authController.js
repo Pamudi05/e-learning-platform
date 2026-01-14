@@ -80,6 +80,7 @@ const loginUser = async (req, res) => {
       httpOnly: true,
       maxAge: 5 * 60 * 60 * 1000,
       secure: false,
+      sameSite: "lax",
     });
 
     res.status(200).json({
