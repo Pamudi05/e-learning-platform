@@ -80,7 +80,6 @@ const loginUser = async (req, res) => {
       httpOnly: true,
       maxAge: 5 * 60 * 60 * 1000,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "None",
     });
 
     res.status(200).json({
@@ -91,7 +90,8 @@ const loginUser = async (req, res) => {
         role: existingUser.role,
       },
     });
-    console.log(token);
+
+    console.log("token",token);
   } catch (error) {
     console.error("LOGIN ERROR:", error.message);
     res.status(500).json({ message: "something went wrong", error: error });
@@ -103,7 +103,6 @@ const logOut = async (req, res) => {
     res.cookie("token", "", {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "None",
     });
     res.status(200).json({ message: "Logout successful!" });
     res.end();
