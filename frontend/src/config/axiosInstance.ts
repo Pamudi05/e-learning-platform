@@ -11,7 +11,7 @@ instance.interceptors.request.use(
         let token = document.cookie.split(';')
         .find(record=>record.startsWith('token=')) || '';
         token = token?.split('=')[1];
-        config.headers.Authorization = token ? `Bearer ${token}` : "";
+        config.headers.Authorization = token;
         return config;
     },
     (error)=>{

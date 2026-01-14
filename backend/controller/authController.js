@@ -2,6 +2,9 @@ import User from "../model/userModel.js";
 import bcrypt from "bcrypt";
 import transporter from "../util/nodemailer.js";
 import jwt from "jsonwebtoken";
+import { config } from "dotenv";
+
+config();
 
 const secret = process.env.SECRET_KEY;
 

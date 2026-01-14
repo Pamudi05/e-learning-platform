@@ -3,6 +3,8 @@ import { config } from "dotenv";
 
 config();
 
+const secretKey = process.env.SECRET_KEY;
+
 const verifyToken = (req, res, next) => {
   const token = req.cookies.token;
   console.log("verifyToken", req.cookies.token);
@@ -12,9 +14,8 @@ const verifyToken = (req, res, next) => {
   }
 
   try {
-    const secretKey = process.env.SECRET_KEY;
-
     const decoded = jwt.verify(token, secretKey);
+      console.log(decoded);
     req.user = decoded;
     next();
   } catch (error) {
