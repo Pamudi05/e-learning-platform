@@ -19,8 +19,6 @@ const RegisterPage = () => {
   const [emailTouched, setEmailTouched] = useState(false);
   const [passwordTouched, setPasswordTouched] = useState(false);
 
-  const [loading, setLoading] = useState(false);
-
   const validateName = (name: string) => {
     return name.trim().length > 0;
   };
@@ -57,7 +55,6 @@ const RegisterPage = () => {
 
   const handleRegisterClick = async (event: React.FormEvent) => {
     event.preventDefault();
-    setLoading(true);
     try {
       setNameTouched(true);
       setEmailTouched(true);
@@ -95,8 +92,6 @@ const RegisterPage = () => {
         error.response?.data?.message ||
         "Failed to create account. Please try again.";
       toast.error(errorMessage);
-    } finally {
-      setLoading(false);
     }
   };
 
