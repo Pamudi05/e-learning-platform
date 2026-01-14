@@ -4,6 +4,7 @@ import cors from "cors";
 import connectToDatabase from "./db/dbConnection.js";
 import cookieParser from "cookie-parser";
 import path from "path";
+import { fileURLToPath } from "url";
 
 import openAiRouter from './routes/openAIRoute.js'
 import authRouter from './routes/authRoutes.js'
