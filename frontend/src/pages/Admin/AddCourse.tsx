@@ -137,6 +137,7 @@ const AddCourse = () => {
         headers: {
           "Content-Type": "multipart/form-data",
         },
+        withCredentials: true,
       });
 
       toast.success(response.data.message || "Course Created successfully!");
