@@ -139,8 +139,8 @@ const AddCourse = () => {
         },
       });
 
-      console.log('response', response)
-      console.log('response data', response.data)
+      console.log("response", response);
+      console.log("response data", response.data);
 
       toast.success(response.data.message || "Course Created successfully!");
     } catch (error) {
@@ -252,10 +252,7 @@ const AddCourse = () => {
           <div>
             <h2>Content</h2>
             {contents.map((item, index) => (
-              <div
-                key={index}
-                style={{ display: "flex", gap: "10px", marginBottom: "10px" }}
-              >
+              <div className="content" key={index}>
                 <InputField
                   type="text"
                   placeholder={`Chapter ${index + 1}`}
@@ -264,20 +261,22 @@ const AddCourse = () => {
                 />
 
                 {contents.length > 1 && (
-                  <button
+                  <Button
                     type="button"
-                    onClick={() => removeContentField(index)}
-                    style={{ cursor: "pointer" }}
-                  >
-                    ❌
-                  </button>
+                    onButtonClick={() => removeContentField(index)}
+                    name="❌"
+                  />
                 )}
               </div>
             ))}
 
-            <button type="button" onClick={addContentField}>
-              ➕ Add Chapter
-            </button>
+            <Button
+              className="addChapter"
+              type="button"
+              onButtonClick={addContentField}
+              name="+ Add Chapter"
+            />
+
             {contentError && <p className="errorImageText">{contentError}</p>}
           </div>
         </div>
