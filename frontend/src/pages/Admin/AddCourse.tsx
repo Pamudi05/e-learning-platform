@@ -137,11 +137,7 @@ const AddCourse = () => {
         console.log(pair[0], pair[1]);
       }
 
-      const response = await AxiosInstance.post("/course/create", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await AxiosInstance.post("/course/create", formData);
 
       console.log("response", response);
       console.log("response data", response.data);
