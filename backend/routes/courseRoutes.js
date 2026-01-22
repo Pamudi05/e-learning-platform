@@ -10,7 +10,7 @@ console.log("🚀 courseRouter loaded");
 router.post(
   "/create",
   (req, res) => {
-     console.log("🚨 POST /course/create reached (no middleware)");
+     console.log("🚨 POST /course/create reached");
     console.log("req.body:", JSON.stringify(req.body, null, 2));
     console.log("req.file:", JSON.stringify(req.file, null, 2));
     res.json({ message: "Route works!" });
