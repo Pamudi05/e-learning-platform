@@ -42,6 +42,8 @@ app.use("/api/v1/content/", contentRouter);
 
 app.use("/uploads", express.static("uploads"));
 
+console.log("----------------");
+
 if (process.env.NODE_ENV === "production") {
   const frontendBuildPath = path.join(__dirname, "../frontend/build");
 
