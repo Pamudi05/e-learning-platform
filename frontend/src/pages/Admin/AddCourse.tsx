@@ -133,7 +133,9 @@ const AddCourse = () => {
       formData.append("image", file);
       formData.append("contents", JSON.stringify(contents));
 
-      console.log(formData, 'formdata')
+      for (let pair of formData.entries()) {
+  console.log(pair[0], pair[1]);
+}
 
       const response = await AxiosInstance.post("/course/create", formData, {
         headers: {
