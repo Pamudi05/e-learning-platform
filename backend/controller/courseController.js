@@ -3,6 +3,9 @@ import Course from "../model/courseModel.js";
 
 const createCourse = async (req, res) => {
   try {
+    console.log("req.file:", JSON.stringify(req.file, null, 2));
+    console.log("req.body:", JSON.stringify(req.body, null, 2));
+
     console.log("req.file:", req.file);
     console.log("req.body:", req.body);
 
