@@ -8,17 +8,12 @@ const secretKey = process.env.SECRET_KEY;
 const verifyToken = (req, res, next) => {
   const token = req.cookies.token;
 
-  console.log("cookies:", req.cookies);
-console.log("token:", req.cookies?.token);
-
-
   if (!token) {
     return res.status(403).json({ message: "Token is missing" });
   }
 
   try {
     const decoded = jwt.verify(token, secretKey);
-    console.log("decoded", decoded);
     req.user = decoded;
     next();
   } catch (error) {
@@ -28,7 +23,6 @@ console.log("token:", req.cookies?.token);
 
 const adminOnly = (req, res, next) => {
   if (req.user.role !== "admin") {
-    console.log("Admin only");
     return res.status(403).json({ message: "Admin only" });
   }
   next();
@@ -36,7 +30,6 @@ const adminOnly = (req, res, next) => {
 
 const userOnly = (req, res, next) => {
   if (req.user.role !== "user") {
-    console.log("User only");
     return res.status(403).json({ message: "User only" });
   }
   next();

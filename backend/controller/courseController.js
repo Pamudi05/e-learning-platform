@@ -2,18 +2,7 @@ import Content from "../model/contentModel.js";
 import Course from "../model/courseModel.js";
 
 const createCourse = async (req, res) => {
-  console.log("🎯 createCourse controller reached");
-
-  console.log("req.file:", req.file);
-  console.log("req.body:", req.body);
-
   try {
-    console.log("req.file:");
-    console.log("req.file:", JSON.stringify(req.file, null, 2));
-
-    console.log("req.body:");
-    console.log("req.body:", JSON.stringify(req.body, null, 2));
-
     if (!req.file) {
       return res.status(400).json({ message: "No file uploaded" });
     }
@@ -48,14 +37,12 @@ const createCourse = async (req, res) => {
       console.log(courseContent)
     }
 
-    console.log('create Course' , result)
     res.status(201).json({
       message: "Course Created Successfully",
       data: result,
     });
   } catch (error) {
     // console.error("CREATE COURSE ERROR:", error);
-    console.error("CREATE COURSE ERROR:", JSON.stringify(error, Object.getOwnPropertyNames(error), 2));
     res.status(500).json({ message: "Something went wrong", error: error });
   }
 };

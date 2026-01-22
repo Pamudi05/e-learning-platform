@@ -130,14 +130,14 @@ const AddCourse = () => {
       formData.append("category", category);
       formData.append("price", price);
       formData.append("duration", duration);
-      formData.append("image", file as File);
+      formData.append("image", file);
       formData.append("contents", JSON.stringify(contents));
 
-      for (let pair of formData.entries()) {
-        console.log(pair[0], pair[1]);
-      }
-
-      const response = await AxiosInstance.post("/course/create", formData);
+      const response = await AxiosInstance.post("/course/create", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
       console.log("response", response);
       console.log("response data", response.data);
