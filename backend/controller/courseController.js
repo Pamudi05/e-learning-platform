@@ -2,6 +2,11 @@ import Content from "../model/contentModel.js";
 import Course from "../model/courseModel.js";
 
 const createCourse = async (req, res) => {
+  console.log("🎯 createCourse controller reached");
+
+  console.log("req.file:", req.file);
+  console.log("req.body:", req.body);
+
   try {
     console.log("req.file:");
     console.log("req.file:", JSON.stringify(req.file, null, 2));
