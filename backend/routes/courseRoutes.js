@@ -9,9 +9,10 @@ console.log("🚀 courseRouter loaded");
 
 router.post(
   "/create",
-  (req, res, next) => {
-    console.log("➡️ POST /course/create request received");
-    next();
+  (req, res) => {
+     console.log("🚨 POST /course/create reached (no middleware)");
+    console.log("req.body:", req.body);
+    res.json({ message: "Route works!" });
   },
   upload.single("image"),
   authMiddleware.verifyToken,
