@@ -9,9 +9,6 @@ const createCourse = async (req, res) => {
     console.log("req.body:");
     console.log("req.body:", JSON.stringify(req.body, null, 2));
 
-    
-    
-
     if (!req.file) {
       return res.status(400).json({ message: "No file uploaded" });
     }
@@ -52,7 +49,8 @@ const createCourse = async (req, res) => {
       data: result,
     });
   } catch (error) {
-    console.error("CREATE COURSE ERROR:", error);
+    // console.error("CREATE COURSE ERROR:", error);
+    console.error("CREATE COURSE ERROR:", JSON.stringify(error, Object.getOwnPropertyNames(error), 2));
     res.status(500).json({ message: "Something went wrong", error: error });
   }
 };
