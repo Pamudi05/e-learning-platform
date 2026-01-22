@@ -32,6 +32,8 @@ app.use(
   })
 );
 
+app.set('trust proxy', 1);
+
 app.use("/api/v1/openai/", openAiRouter);
 app.use("/api/v1/auth/", authRouter);
 app.use("/api/v1/course/", courseRouter);

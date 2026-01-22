@@ -33,7 +33,7 @@ const registerUser = async (req, res) => {
     const mailOption = {
       from: process.env.EMAIL_USER,
       to: req.body.email,
-      subject: "Account Created",
+      subject: "Account Created Successfully",
       text: "You have successfully created an account",
     };
 
