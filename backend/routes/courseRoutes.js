@@ -9,12 +9,12 @@ console.log("🚀 courseRouter loaded");
 
 router.post(
   "/create",
-  (req, res) => {
-     console.log("🚨 POST /course/create reached");
-    console.log("req.body:", JSON.stringify(req.body, null, 2));
-    console.log("req.file:", JSON.stringify(req.file, null, 2));
-  },
   upload.single("image"),
+  (req, res) => {
+    console.log("TEST req.body:", req.body);
+    console.log("TEST req.file:", req.file);
+    res.json({ ok: true });
+  },
   authMiddleware.verifyToken,
   authMiddleware.adminOnly,
   courseController.createCourse,
