@@ -130,12 +130,12 @@ const AddCourse = () => {
       formData.append("category", category);
       formData.append("price", price);
       formData.append("duration", duration);
-      formData.append("image", file);
+      formData.append("image", file as File);
       formData.append("contents", JSON.stringify(contents));
 
       for (let pair of formData.entries()) {
-  console.log(pair[0], pair[1]);
-}
+        console.log(pair[0], pair[1]);
+      }
 
       const response = await AxiosInstance.post("/course/create", formData, {
         headers: {
@@ -147,7 +147,7 @@ const AddCourse = () => {
       console.log("response data", response.data);
 
       toast.success(response.data.message || "Course Created successfully!");
-    } catch (error:any) {
+    } catch (error: any) {
       toast.error("Please try again");
       console.log(error.response.data.error);
     }

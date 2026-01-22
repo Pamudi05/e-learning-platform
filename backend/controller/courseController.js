@@ -3,14 +3,15 @@ import Course from "../model/courseModel.js";
 
 const createCourse = async (req, res) => {
   try {
-    console.log(req.file , "file")
+    console.log("req.file:", req.file);
+    console.log("req.body:", req.body);
 
     if (!req.file) {
       return res.status(400).json({ message: "No file uploaded" });
     }
 
     // const image = req.files.map((file) => file.path);
-    const image = [req.file.path];
+     const image = [req.file.path || req.file.secure_url];
 
     let contents = [];
     if (req.body.contents) {
