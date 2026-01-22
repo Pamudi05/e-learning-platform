@@ -11,17 +11,16 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// const storage = new CloudinaryStorage({
-//   cloudinary: cloudinary,
-//   params: {
-//     folder: "courseimages",
-//     allowed_formats: ["jpg", "jpeg", "png", "webp"],
-//     public_id: (req, file) => `${Date.now()}-${file.originalname}`,
-//     transformation: [{ width: 1000, crop: "limit" }],
-//   },
-// });
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: "courseimages",
+    allowed_formats: ["jpg", "jpeg", "png", "webp"],
+    public_id: (req, file) => `${Date.now()}-${file.originalname}`,
+    transformation: [{ width: 1000, crop: "limit" }],
+  },
+});
 
-const storage = multer.memoryStorage();
 
 const upload = multer({ storage });
 

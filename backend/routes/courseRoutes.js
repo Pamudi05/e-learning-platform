@@ -13,7 +13,6 @@ router.post(
      console.log("🚨 POST /course/create reached");
     console.log("req.body:", JSON.stringify(req.body, null, 2));
     console.log("req.file:", JSON.stringify(req.file, null, 2));
-    res.json({ message: "Route works!" });
   },
   upload.single("image"),
   authMiddleware.verifyToken,
