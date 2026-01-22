@@ -5,7 +5,6 @@ import Course from "../model/courseModel.js";
 const recommendCourses = async (req, res) => {
   try {
     const { userId, question } = req.body;
-    console.log(userId, question);
 
     if (!userId) {
       return res.status(400).json({ message: "userId is required" });
@@ -57,10 +56,7 @@ Example:
 
     const corsesRecommend = recommendedCourses.map(course => ({
       ...course,
-      image:
-          course.image?.map(
-            (img) => `${req.protocol}://${req.get("host")}/${img}`
-          ) || [],
+      image:course.image
     }))
 
     console.log("recommendedCourses", corsesRecommend);

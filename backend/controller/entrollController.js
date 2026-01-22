@@ -41,10 +41,7 @@ const getUserEnrolledCourses = async (req, res) => {
       const enrollcorses = enroll.courseId._doc || enroll.courseId;
       return {
         ...enrollcorses,
-        image:
-          enrollcorses.image?.map(
-            (img) => `${req.protocol}://${req.get("host")}/${img}`
-          ) || [],
+        image:enrollcorses.image,
       };
     });
 
