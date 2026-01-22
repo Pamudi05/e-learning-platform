@@ -16,6 +16,7 @@ const storage = new CloudinaryStorage({
   params: {
     folder: "courseimages",
     allowed_formats: ["jpg", "jpeg", "png", "webp"],
+    public_id: (req, file) => `${Date.now()}-${file.originalname}`,
     transformation: [{ width: 1000, crop: "limit" }],
   },
 });

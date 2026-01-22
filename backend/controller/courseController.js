@@ -9,7 +9,7 @@ const createCourse = async (req, res) => {
     }
 
     // const image = req.files.map((file) => file.path);
-    const image = [req.file.secure_url || req.file.path];
+    const image = [req.file.path || req.file.secure_url];
 
     let contents = [];
     if (req.body.contents) {
@@ -127,7 +127,7 @@ const update = async (req, res) => {
     // }
 
     if (req.file) {
-      const image = [req.file.secure_url || req.file.path];
+      const image = [req.file.path || req.file.secure_url];
       updateCourses.image = image;
     }
 
