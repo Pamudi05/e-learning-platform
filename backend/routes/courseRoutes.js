@@ -1,6 +1,6 @@
 import express from 'express';
 import courseController from '../controller/courseController.js'
-import upload from "../util/multer.js";
+import upload from "../util/cloudinary.js";
 import authMiddleware from "../middleware/authMiddleware.js";
 
 const router = express.Router();

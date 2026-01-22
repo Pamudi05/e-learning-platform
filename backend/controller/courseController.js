@@ -69,9 +69,7 @@ const findAllCourses = async (req, res) => {
 
     const allCourses = courses.map((course) => ({
       ...course._doc,
-      image: course.image.map(
-        (img) => `${req.protocol}://${req.get("host")}/${img}`
-      ),
+      image: course.image
     }));
 
     res.status(200).json({
@@ -97,9 +95,7 @@ const findById = (req, res) => {
         if (result) {
           const course = {
             ...result._doc,
-            image: result.image.map(
-              (img) => `${req.protocol}://${req.get("host")}/${img}`
-            ),
+            image: result.image,
           };
           res.status(200).json({ data: course });
         } else {
