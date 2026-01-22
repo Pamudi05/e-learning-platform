@@ -11,7 +11,8 @@ router.post(
   "/create",
   (req, res) => {
      console.log("🚨 POST /course/create reached (no middleware)");
-    console.log("req.body:", req.body);
+    console.log("req.body:", JSON.stringify(req.body, null, 2));
+    console.log("req.file:", JSON.stringify(req.file, null, 2));
     res.json({ message: "Route works!" });
   },
   upload.single("image"),
