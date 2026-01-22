@@ -4,11 +4,12 @@ import Course from "../model/courseModel.js";
 const createCourse = async (req, res) => {
   try {
 
-    if (!req.files || req.files.length === 0) {
-      return res.status(400).json({ message: "No files uploaded" });
+    if (!req.file) {
+      return res.status(400).json({ message: "No file uploaded" });
     }
 
-    const image = req.files.map((file) => file.path);
+    // const image = req.files.map((file) => file.path);
+    const image = [req.file.secure_url || req.file.path];
 
     let contents = [];
     if (req.body.contents) {
@@ -120,8 +121,13 @@ const update = async (req, res) => {
       duration: req.body.duration,
     };
 
-    if (req.files && req.files.length > 0) {
-      const image = req.files.map((file) => file.path);
+    // if (req.files && req.files.length > 0) {
+    //   const image = req.files.map((file) => file.path);
+    //   updateCourses.image = image;
+    // }
+
+    if (req.file) {
+      const image = [req.file.secure_url || req.file.path];
       updateCourses.image = image;
     }
 
