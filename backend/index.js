@@ -29,10 +29,10 @@ app.use(
   cors({
     origin: process.env.FRONTEND_URL,
     credentials: true,
-  })
+  }),
 );
 
-app.set('trust proxy', 1);
+app.set("trust proxy", 1);
 
 app.use("/api/v1/openai/", openAiRouter);
 app.use("/api/v1/auth/", authRouter);
@@ -40,7 +40,7 @@ app.use("/api/v1/course/", courseRouter);
 app.use("/api/v1/enroll/", entrollRouter);
 app.use("/api/v1/content/", contentRouter);
 
-app.use("/uploads", express.static("uploads"));
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 if (process.env.NODE_ENV === "production") {
   const frontendBuildPath = path.join(__dirname, "../frontend/build");
@@ -48,7 +48,11 @@ if (process.env.NODE_ENV === "production") {
   app.use(express.static(frontendBuildPath));
 
   app.use((req, res, next) => {
-    if (req.method === "GET" && !req.path.startsWith("/api")) {
+    if (
+      req.method === "GET" &&
+      !req.path.startsWith("/api") &&
+      !req.path.startsWith("/uploads")
+    ) {
       res.sendFile(path.join(frontendBuildPath, "index.html"));
     } else {
       next();
