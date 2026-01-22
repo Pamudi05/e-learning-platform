@@ -40,7 +40,7 @@ app.use("/api/v1/course/", courseRouter);
 app.use("/api/v1/enroll/", entrollRouter);
 app.use("/api/v1/content/", contentRouter);
 
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use("/uploads", express.static("uploads"));
 
 if (process.env.NODE_ENV === "production") {
   const frontendBuildPath = path.join(__dirname, "../frontend/build");
