@@ -3,13 +3,18 @@ import Enroll from "../model/entrollementModel.js";
 import Course from "../model/courseModel.js";
 
 const recommendCourses = async (req, res) => {
+  const { userId, question } = req.body;
+
+  if (!userId) {
+    return res.status(400).json({ message: "userId is required" });
+  }
+
+  const defaultCourses = await Course.find({})
+    .limit(4)
+    .select("title description category price duration image")
+    .lean();
+
   try {
-    const { userId, question } = req.body;
-
-    if (!userId) {
-      return res.status(400).json({ message: "userId is required" });
-    }
-
     const enrollments = await Enroll.find({ userId }).populate("courseId");
 
     const courseTitles = enrollments.map((enroll) => enroll.courseId.title);
@@ -23,9 +28,6 @@ ${courseTitles.length > 0 ? courseTitles.join(", ") : "No courses yet"}
 
 From our available courses, suggest 4 relevant course titles.
 Respond ONLY as a JSON array of strings.
-
-Example:
-["Full Stack Web Development", "Data Structures & Algorithms"]
 `;
 
     const response = await openai.chat.completions.create({
@@ -34,7 +36,7 @@ Example:
     });
 
     const recommendCourseTitles = JSON.parse(
-      response.choices[0].message.content
+      response.choices[0].message.content,
     );
 
     console.log("recommendCourseTitles", recommendCourseTitles);
@@ -45,25 +47,36 @@ Example:
         .filter((word) => word.length > 3)
         .map((word) => ({
           title: { $regex: word, $options: "i" },
-        }))
+        })),
     );
 
     console.log("keywordQueries", keywordQueries);
 
     const recommendedCourses = await Course.find({
       $or: keywordQueries,
-    }).select("title description category price duration image").lean();
+    })
+      .select("title description category price duration image")
+      .lean();
 
-    const corsesRecommend = recommendedCourses.map(course => ({
+    const corsesRecommend = recommendedCourses.map((course) => ({
       ...course,
-      image:course.image
-    }))
+      image: course.image,
+    }));
 
     console.log("recommendedCourses", corsesRecommend);
 
-    res.status(200).json({ recommendations: corsesRecommend });
+    // res.status(200).json({ recommendations: corsesRecommend });
+    return res.status(200).json({
+      recommendations: corsesRecommend.length
+        ? corsesRecommend
+        : defaultCourses,
+    });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({
+      error: error.message,
+      message: "AI service unavailable, showing default recommendations",
+      courses: defaultCourses,
+    });
   }
 };
 
