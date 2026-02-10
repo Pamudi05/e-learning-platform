@@ -14,6 +14,8 @@ const recommendCourses = async (req, res) => {
     .select("title description category price duration image")
     .lean();
 
+  let corsesRecommend = [];
+
   try {
     const enrollments = await Enroll.find({ userId }).populate("courseId");
 
@@ -66,18 +68,18 @@ Respond ONLY as a JSON array of strings.
     console.log("recommendedCourses", corsesRecommend);
 
     // res.status(200).json({ recommendations: corsesRecommend });
-    return res.status(200).json({
-      recommendations: corsesRecommend.length
-        ? corsesRecommend
-        : defaultCourses,
-    });
   } catch (error) {
-    res.status(500).json({
-      error: error.message,
-      message: "AI service unavailable, showing default recommendations",
-      courses: defaultCourses,
-    });
+    console.error("OpenAI failed:", error.message);
+    // res.status(500).json({
+    //   error: error.message,
+    //   message: "AI service unavailable, showing default recommendations",
+    //   courses: defaultCourses,
+    // });
   }
+
+  return res.status(200).json({
+    recommendations: corsesRecommend.length ? corsesRecommend : defaultCourses,
+  });
 };
 
 export default { recommendCourses };
