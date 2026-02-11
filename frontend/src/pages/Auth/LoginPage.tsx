@@ -121,7 +121,7 @@ const LoginPage = () => {
               {passwordTouched && <p className="error-text">{passwordError}</p>}
             </div>
             <div className="forgot-box">
-              <p className="forgot">forgotPassowrd?</p>
+             {/* <p className="forgot">forgotPassowrd?</p> */}
             </div>
             <div className="button-box">
               <Button className="button" type="submit" name="LOGIN" />
